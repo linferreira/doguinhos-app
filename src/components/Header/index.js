@@ -1,15 +1,21 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
-import styles from './index.modules.css'
+import React from "react";
+import { Link } from "react-router-dom";
+import { ReactComponent as Doguinhos } from "../../assets/dogs.svg";
+import styles from './index.module.css'
 
 const Header = () => {
-    return <div className={styles.header}>
-        <nav className='container'>
-            <Link to='/'>Home</Link>
-            <Link to='/login'>Login / Criar</Link>
-        </nav>
-    </div>
-}
+  return (
+    <header className={styles.header}>
+      <nav className={`${styles.nav} container`}>
+        <Link className={styles.logo} to="/" aria-label="Doghinhos - Home">
+          <Doguinhos />
+        </Link>
+        <Link className={styles.login} to="/login">
+          Login / Criar
+        </Link>
+      </nav>
+    </header>
+  );
+};
 
-
-export default Header
+export default Header;
