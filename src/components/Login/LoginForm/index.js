@@ -1,59 +1,47 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import { Input } from '../../Forms/Input';
-import { Button } from '../../Forms/Button';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Input } from "../../Forms/Input";
+import { Button } from "../../Forms/Button";
+import useForm from "../../../Hooks/useForm";
 
 const LoginForm = () => {
-    const [username, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+  const username = useForm("email");
+  const password = useForm();
 
-    function handleSubmit(event) {
-      event.preventDefault();
+  function handleSubmit(event) {
+    event.preventDefault();
 
+    if (username.validate && password.validate) {
       fetch("https://dogsapi.origamid.dev/json/jwt-auth/v1/token", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({ username, password }),
-      }).then((response) => {
-        console.log(response);
+      })
+        .then((response) => {
+          console.log(response);
 
-        return response.json();
-      }).then((json) => {
-        console.log(json);
-      });
+          return response.json();
+        })
+        .then((json) => {
+          console.log(json);
+        });
     }
+  }
 
-    return <section>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-            <Input 
-              label="Usuário"
-              type='text' 
-              name='username'
-            />
-            <Input 
-              label="Senha"
-              type='password'
-              name='password' 
-            />
+  return (
+    <section>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <Input label="Usuário" type="text" name="username" {...username} />
+        <Input label="Senha" type="password" name="password" {...password} />
 
-            {/* <input 
-                value={username} 
-                onChange={({target}) => setUserName(target.value)} 
-            />
-
-            <input 
-                value={password} 
-                onChange={({target}) => setPassword(target.value)} 
-            /> */}
-
-            <Button>Entrar</Button>
-        
-        </form>
-        <Link to='/login/criar'>Cadastro</Link>
+        <Button>Entrar</Button>
+      </form>
+      <Link to="/login/criar">Cadastro</Link>
     </section>
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
