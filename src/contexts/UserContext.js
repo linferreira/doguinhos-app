@@ -1,5 +1,5 @@
 import React, { createContext, useState } from "react";
-import { TOKEN_POST, USER_GET } from "./api";
+import { TOKEN_POST, USER_GET } from "../api";
 
 export const UserContext = createContext();
 
