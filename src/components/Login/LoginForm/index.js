@@ -1,48 +1,42 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import React, { useContext } from "react";
+import { Link } from "react-router-dom";
+import { UserContext } from "../../../contexts/UserContext";
+import useForm from "../../../hooks/useForm";
+import { Button } from "../../Forms/Button";
+import { Input } from "../../Forms/Input";
 
 const LoginForm = () => {
-    const [username, setUserName] = useState("");
-    const [password, setPassword] = useState("");
+  const username = useForm();
+  const password = useForm();
 
-    function handleSubmit(event) {
-      event.preventDefault();
+  const { userLogin, error, loading } = useContext(UserContext);
 
-      fetch("https://dogsapi.origamid.dev/json/jwt-auth/v1/token", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, password }),
-      }).then((response) => {
-        console.log(response);
+  async function handleSubmit(event) {
+    event.preventDefault();
 
-        return response.json();
-      }).then((json) => {
-        console.log(json);
-      });
+    if (username.validate && password.validate) {
+      userLogin(username.value, password.value);
     }
+  }
 
-    return <section>
-        <h1>Login</h1>
-        <form onSubmit={handleSubmit}>
-            <input 
-                type='text' 
-                value={username} 
-                onChange={({target}) => setUserName(target.value)} 
-            />
+  return (
+    <section>
+      <h1>Login</h1>
+      <form onSubmit={handleSubmit}>
+        <Input label="Usuário" type="text" name="username" {...username} />
+        <Input label="Senha" type="password" name="password" {...password} />
 
-            <input 
-                type='password' 
-                value={password} 
-                onChange={({target}) => setPassword(target.value)} 
-            />
+        {loading ? (
+          <Button disabled>Carregando</Button>
+        ) : (
+          <Button>Entrar</Button>
+        )}
 
-            <button>Enviar</button>
-        
-        </form>
-        <Link to='/login/criar'>Cadastro</Link>
+        {error && <p>{error}</p>}
+      </form>
+      <Link to="/login/criar">Cadastro</Link>
     </section>
-}
+  );
+};
 
-export default LoginForm
+export default LoginForm;
