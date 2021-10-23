@@ -5,7 +5,7 @@ import styles from "./index.module.css";
 import { UserContext } from "../../contexts/UserContext";
 
 const Header = () => {
-  const { data, userLogout } = useContext(UserContext);
+  const { data } = useContext(UserContext);
 
   return (
     <header className={styles.header}>
